@@ -6,24 +6,21 @@
 /*   By: eramirez <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/06 18:39:04 by eramirez          #+#    #+#             */
-/*   Updated: 2017/11/06 19:50:54 by eramirez         ###   ########.fr       */
+/*   Updated: 2017/11/07 14:58:09 by eramirez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fcntl.h>
-#include "./libft/includes/libft.h"
-#include <stdio.h>
-
-void read_map(int fd, char *map);
+#include "fdf.h"
 
 int	main(int argc, char **argv)
 {
 	int fd;
-	char *map;
+	int **arr;
 
+	fd = argc;
 	fd = open(argv[1], O_RDONLY);
 	printf("Fd: %i\n", fd);
-	read_map(fd, map);
+	arr = read_map(fd);
 	close(fd);
 	return(0);
 }

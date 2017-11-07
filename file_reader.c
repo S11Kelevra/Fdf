@@ -6,21 +6,11 @@
 /*   By: eramirez <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/06 18:20:28 by eramirez          #+#    #+#             */
-/*   Updated: 2017/11/06 22:50:08 by eramirez         ###   ########.fr       */
+/*   Updated: 2017/11/07 14:58:25 by eramirez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include "./libft/includes/libft.h"
-#include <stdlib.h>
-
-typedef struct		s_rows
-{
-	char 			**split_line;
-	struct s_rows	*next;
-	int 			*array;
-	int				elem;
-}					t_rows;
+#include "./fdf.h"
 
 t_rows 	*start_read(char *line)
 {
@@ -29,6 +19,7 @@ t_rows 	*start_read(char *line)
 
 	i = ft_dlnwordcount(line, ' ');
 	temp = (t_rows *)malloc(sizeof(t_rows));
+	temp->elem = ft_dlnwordcount(line, ' ');
 	temp->split_line = ft_strsplit(line, ' ');
 	temp->array = (int *)malloc(sizeof(int) * i);
 	i = -1;
@@ -57,23 +48,60 @@ t_rows *add_read(t_rows *head, char *line)
 	return (temp);
 }
 
-void read_map(int fd, char *map)
+int **list_toarr(t_rows *start, int rows)
 {
-	int H;
-	int W;
+	int **arr;
+	int y;
+	int x;
+	int k;
+	t_rows *temp;
+
+	k = start->elem;
+	temp = start;
+	x = -1;
+	y = -1;
+	arr = (int **)malloc(sizeof(int*) * rows);
+	printf("line ROW: %i COL: %i\n", rows, start->elem);
+	while(++y < rows)
+	{
+		printf("ROW[%i] COL: %i\n", y, start->elem);
+		arr[y] = (int *)malloc(sizeof(int) * start->elem);
+	}
+	printf("Malloc good!\n");
+	y = -1;
+	while (++y < rows)
+	{	//printf("Starting loop!\n");
+		//printf("Elem in this line : %i\n", temp->elem);
+		x = -1;
+		//printf("arr[0] = %i\n", temp->array[x]);
+		//printf("X reset to %i y is %i\n", x, y);
+		while (++x < k)
+		{
+			//printf("Adding %i to arr[%i][%i]->", temp->array[x], y, x);
+			arr[y][x] = temp->array[x];
+			//printf("Added!\n");
+		}
+		//printf("Moving list\n");
+		temp = temp->next;
+	}
+	return (arr);
+}
+
+int **read_map(int fd)
+{
 	char *line;
-	char **string;
+	int **arr;
 	int i;
 	int j;
-	int k;
+	int x;
+	int y;
 	t_rows	*head;
 	t_rows	*temp;
-
+	
 	i = 0;
-	j = 0;
-	k = 0;
-	H = 0;
-	W = 0;
+	j = 1;
+	x = -1;
+	y = -1;
 	while (get_next_line(fd, &line) > 0)
 	{
 		if(i == 0)
@@ -82,26 +110,23 @@ void read_map(int fd, char *map)
 			add_read(head, line);
 		i++;
 	}
+	printf("Array size: (%i,%i)\n", head->elem, i);
 	temp = head;
-	while (k < i)
-	{	
-		j = -1;
-		while(temp->split_line[++j])
-			printf("%s  ", temp->split_line[j]);
-		printf("\n");
+	while (temp->next != NULL)
+	{
+		j++;
 		temp = temp->next;
-		k++;
 	}
 	temp = head;
-	printf("\nX elements = %i\n", i);
-	k = 0;
-	while (k < i)
-	{	
-		j = -1;
-		while(temp->split_line[++j])
-			printf("%i -", temp->array[j]);
+	printf("Linked list size : %i\n", j);
+	arr = list_toarr(temp, i);
+	printf("2D array :\n");
+	while(++y < i)
+	{
+		x = - 1;
+		while(++x < head->elem)
+			printf("%i ", arr[y][x]);
 		printf("\n");
-		temp = temp->next;
-		k++;
 	}
+	return(arr);
 }
