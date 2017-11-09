@@ -6,7 +6,7 @@
 /*   By: eramirez <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/06 18:20:28 by eramirez          #+#    #+#             */
-/*   Updated: 2017/11/07 14:58:25 by eramirez         ###   ########.fr       */
+/*   Updated: 2017/11/08 22:52:03 by eramirez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ int **list_toarr(t_rows *start, int rows)
 	int **arr;
 	int y;
 	int x;
-	int k;
 	t_rows *temp;
 
-	k = start->elem;
+	g_W = start->elem;
+	g_H = rows;
 	temp = start;
 	x = -1;
 	y = -1;
@@ -75,7 +75,7 @@ int **list_toarr(t_rows *start, int rows)
 		x = -1;
 		//printf("arr[0] = %i\n", temp->array[x]);
 		//printf("X reset to %i y is %i\n", x, y);
-		while (++x < k)
+		while (++x < g_W)
 		{
 			//printf("Adding %i to arr[%i][%i]->", temp->array[x], y, x);
 			arr[y][x] = temp->array[x];
