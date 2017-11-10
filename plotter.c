@@ -6,7 +6,7 @@
 /*   By: eramirez <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 01:18:48 by eramirez          #+#    #+#             */
-/*   Updated: 2017/11/09 00:06:59 by eramirez         ###   ########.fr       */
+/*   Updated: 2017/11/10 00:22:42 by eramirez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,34 @@ void	plot_node(void *mlx, void *win, int x, int y, int z)
 	}
 }
 
-void	draw_line(void *mlx, void *win, int x, int y , int X, int Y, unsigned long color)
+
+float	my_color(int z, int Z, int start, int stop, int delta)
+{
+	int Zmax;
+	float color;
+	float PTG;
+	int delta_z;
+	float slope;
+
+	Zmax = 10;
+	delta_z = z - Z;
+	if (z < Z)
+		slope = 1.0;
+	else
+		slope = -1.0;
+	if (delta_z == 0)
+		return(0.0);
+	if (start > stop)
+		PTG = -1 * ((float)start - (float)stop - (float)delta)/(float)delta;
+	else
+		PTG = ((float)start - (float)stop + (float)delta)/(float)delta;
+	color = (PTG * my_abs((float)(z - Z)));
+	color = color / (float)Zmax;
+	//printf("Percent line -> %f\n", PTG);
+	printf("Percent color>  %f\n", slope * color);
+	return(color * slope);
+}
+void	draw_line(void *mlx, void *win, int x, int y , int z, int X, int Y, int Z, unsigned long color)
 {
 	int delta_x;
 	int delta_y;
@@ -50,7 +77,7 @@ void	draw_line(void *mlx, void *win, int x, int y , int X, int Y, unsigned long 
 	int theta_y;
 	float theta_line;
 	float pitch;
-
+	
 	if (x == X && y == Y)
 	{
 		mlx_pixel_put(mlx, win, x, y, color);
@@ -66,41 +93,32 @@ void	draw_line(void *mlx, void *win, int x, int y , int X, int Y, unsigned long 
 		theta_y = 1;
 	else
 		theta_y = -1;
-	unsigned long test;
-	test = BLUE;
-
-	printf("delta X:%i\ndelta Y:%i\n", delta_x, delta_y);
-	printf("theta X:%i\ntheta Y:%i\n", theta_x, theta_y);
-
 	if (my_abs(delta_y) < my_abs(delta_x))
 	{
 		theta_line = (float)delta_y / (float)delta_x;
 		pitch =  (float)y - theta_line * (float)x;
-		printf("Theta line:%f\nPitch line:%f\n", theta_line, pitch);
 		while (x != X)
 		{
-			printf("Placing (%i,%f)\n", x, (theta_line * (float)x + pitch + 0.5));
-			mlx_pixel_put(mlx, win, x, (int)((float)theta_line * (float)x + pitch + 0.5), color >> x);
+		
+			mlx_pixel_put(mlx, win, x, (int)(theta_line * (float)x + pitch + 0.5),
+					color + (BLUE * ((float)z/10.0)) + (BLUE * my_color(z, Z, x, X, my_abs(delta_x))));
 			x = x + theta_x;
-			printf("New x:%i\n", x);
+			printf("%i\n", x);
 		}
 	}
 	else
 	{
 		theta_line = (float)delta_x / (float)delta_y;
 		pitch = (float)x - theta_line * (float)y;
-		printf("Theta line:%f\nPitch line:%f\n", theta_line, pitch);
 		while (y != Y)
-		{
-			printf("Placing (%i,%i)\n", (int)(theta_line * (float)y + pitch + 0.5), y);
-			mlx_pixel_put(mlx, win, (int)(theta_line * (float)y + pitch + 0.5), y, RED + GREEN + BLUE - (y * ONE));
+		{	
+			mlx_pixel_put(mlx, win, (int)(theta_line * (float)y + pitch + 0.5), y,
+					color + (BLUE * ((float)z/10.0)) + (BLUE * my_color(z, Z, y, Y, my_abs(delta_y))));
 			y = y + theta_y;
-			printf("New y:%i\n", y);
+			//printf("%i\n", y);
 		}
 	}
-	printf("last pixel->");
 	mlx_pixel_put(mlx, win, X, Y, color);
-	printf("placed!\n");
 }
 
 void	grid_plot(void *mlx, void *win, int **arr)
@@ -122,14 +140,15 @@ void	grid_plot(void *mlx, void *win, int **arr)
 		}
 		y++;
 	}
-/*	draw_line(mlx, win, 10, 10, 10, 500, WHITE);
-	draw_line(mlx, win, 11, 11, 11, 501, WHITE);
-	draw_line(mlx, win, 12, 12, 12, 502, WHITE);
-	draw_line(mlx, win, 13, 13, 13, 503, WHAT);
-	draw_line(mlx, win, 14, 14, 14, 504, WHAT);
-	draw_line(mlx, win, 15, 15, 15, 505, WHAT);
-	draw_line(mlx, win, 16, 16, 16, 506, WHAT);
-	draw_line(mlx, win, 17, 17, 17, 507, WHITE);
-	*/
+	//draw_line(mlx, win, 10, 10, 10, 100, 100, 7, RED);
+	//draw_line(mlx, win, 100, 100, 7, 200, 200, 4, RED);
+	//draw_line(mlx, win, 200, 200, 4, 300, 300, 1, RED);
+
+
+	//draw_line(mlx, win, 100, 100, 0, 250, 250, 10, RED);
+
+	draw_line(mlx, win, 550, 500, 0, 350, 300, 10, RED);
+	draw_line(mlx, win, 500, 500, 10, 300, 300, 0, RED);
+
 	mlx_loop(mlx);
 }
