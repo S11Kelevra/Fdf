@@ -6,7 +6,7 @@
 /*   By: eramirez <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 01:18:48 by eramirez          #+#    #+#             */
-/*   Updated: 2017/11/10 00:22:42 by eramirez         ###   ########.fr       */
+/*   Updated: 2017/11/16 15:39:32 by eramirez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,27 @@ int	my_abs(int n)
 		return (-1 * n);
 	else
 		return(n);
+}
+
+void	z_max(int **arr)
+{
+	int x;
+	int y;
+
+	x = 0;
+	y = 0;
+	g_zMax = 0;
+	while(y < g_H)
+	{
+		while (x < g_W)
+		{
+			if (g_zMax < arr[y][x])
+				g_zMax = arr[y][x];
+			x++;
+		}
+		y++;
+		x = 0;
+	}
 }
 
 void	plot_node(void *mlx, void *win, int x, int y, int z)
@@ -51,7 +72,7 @@ float	my_color(int z, int Z, int start, int stop, int delta)
 	int delta_z;
 	float slope;
 
-	Zmax = 10;
+	Zmax = g_zMax;
 	delta_z = z - Z;
 	if (z < Z)
 		slope = 1.0;
@@ -65,10 +86,10 @@ float	my_color(int z, int Z, int start, int stop, int delta)
 		PTG = ((float)start - (float)stop + (float)delta)/(float)delta;
 	color = (PTG * my_abs((float)(z - Z)));
 	color = color / (float)Zmax;
-	//printf("Percent line -> %f\n", PTG);
-	printf("Percent color>  %f\n", slope * color);
 	return(color * slope);
 }
+
+
 void	draw_line(void *mlx, void *win, int x, int y , int z, int X, int Y, int Z, unsigned long color)
 {
 	int delta_x;
@@ -77,6 +98,7 @@ void	draw_line(void *mlx, void *win, int x, int y , int z, int X, int Y, int Z, 
 	int theta_y;
 	float theta_line;
 	float pitch;
+	float PTG;
 	
 	if (x == X && y == Y)
 	{
@@ -99,9 +121,9 @@ void	draw_line(void *mlx, void *win, int x, int y , int z, int X, int Y, int Z, 
 		pitch =  (float)y - theta_line * (float)x;
 		while (x != X)
 		{
-		
+			PTG = my_color(z, Z, x, X, my_abs(delta_x));
 			mlx_pixel_put(mlx, win, x, (int)(theta_line * (float)x + pitch + 0.5),
-					color + (BLUE * ((float)z/10.0)) + (BLUE * my_color(z, Z, x, X, my_abs(delta_x))));
+					color + (GREEN * ((float)z/(float)g_zMax)) + (GREEN * PTG));
 			x = x + theta_x;
 			printf("%i\n", x);
 		}
@@ -111,44 +133,72 @@ void	draw_line(void *mlx, void *win, int x, int y , int z, int X, int Y, int Z, 
 		theta_line = (float)delta_x / (float)delta_y;
 		pitch = (float)x - theta_line * (float)y;
 		while (y != Y)
-		{	
+		{
+			PTG = my_color(z, Z, y, Y, my_abs(delta_y));
 			mlx_pixel_put(mlx, win, (int)(theta_line * (float)y + pitch + 0.5), y,
-					color + (BLUE * ((float)z/10.0)) + (BLUE * my_color(z, Z, y, Y, my_abs(delta_y))));
+				color + (GREEN * ((float)z/(float)g_zMax)) + (GREEN * PTG));
 			y = y + theta_y;
-			//printf("%i\n", y);
 		}
 	}
 	mlx_pixel_put(mlx, win, X, Y, color);
 }
 
-void	grid_plot(void *mlx, void *win, int **arr)
+void	h_lines(void *mlx, void* win, int grad, int offset, int **arr)
 {
 	int x;
 	int y;
-	int z;
 
 	x = 0;
 	y = 0;
-	z = arr[x][y];
-	while(y < g_H)
+	while (y < g_H)
 	{
-		x = 0;
-		while (x < g_W)
+		while (x + 1 < g_W)
 		{
-			plot_node(mlx, win, x * 5, y * 5, arr[y][x]);
+			draw_line(mlx, win, (x+y) * grad/3 + offset, (y * grad)/2 + offset - arr[y][x] * 2, arr[y][x],
+								(x + 1 + y) * grad/3 + offset, (y * grad)/2 + offset - arr[y][x+1] * 2, arr[y][x+1], RED);
 			x++;
 		}
 		y++;
+		x = 0;
 	}
-	//draw_line(mlx, win, 10, 10, 10, 100, 100, 7, RED);
-	//draw_line(mlx, win, 100, 100, 7, 200, 200, 4, RED);
-	//draw_line(mlx, win, 200, 200, 4, 300, 300, 1, RED);
+}
 
+void	v_lines(void *mlx, void *win, int grad, int offset, int **arr)
+{
+	int x;
+	int y;
 
-	//draw_line(mlx, win, 100, 100, 0, 250, 250, 10, RED);
+	x = 0;
+	y = 0;
+	while (x < g_W)
+	{
+		while (y + 1 < g_H)
+		{
+			draw_line(mlx, win, ((x+y) * grad + offset), (y * grad)/2 + offset - arr[y][x] * 2, arr[y][x],
+								(x+y+1) * grad + offset, ((y + 1) * grad)/2 + offset - arr[y+1][x] * 2, arr[y+1][x], RED);
+			y++;
+		}
+		x++;
+		y = 0;
+	}
+}
 
-	draw_line(mlx, win, 550, 500, 0, 350, 300, 10, RED);
-	draw_line(mlx, win, 500, 500, 10, 300, 300, 0, RED);
+void	frame_plot(void *mlx, void *win, int **arr)
+{
+	int grad;
+	int offset;
 
+	z_max(arr);
+	offset = 10;
+	grad = 40;
+	v_lines(mlx, win, grad, offset, arr);
+	h_lines(mlx, win, grad, offset, arr);
+}
+
+void	grid_plot(void *mlx, void *win, int **arr)
+{
+	frame_plot(mlx, win, arr);
 	mlx_loop(mlx);
 }
+
+

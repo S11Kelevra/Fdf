@@ -6,7 +6,7 @@
 /*   By: eramirez <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/06 18:39:04 by eramirez          #+#    #+#             */
-/*   Updated: 2017/11/08 19:14:00 by eramirez         ###   ########.fr       */
+/*   Updated: 2017/11/15 14:05:07 by eramirez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int argc, char **argv)
     void    *win;
     
 	mlx = mlx_init();
-    win = mlx_new_window(mlx, 1000, 1000, "Testing");
+    win = mlx_new_window(mlx, 4000, 2000, "Testing");
 	fd = argc;
 	fd = open(argv[1], O_RDONLY);
 	printf("Fd: %i\n", fd);
