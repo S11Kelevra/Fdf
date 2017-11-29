@@ -6,7 +6,7 @@
 /*   By: eramirez <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 13:17:43 by eramirez          #+#    #+#             */
-/*   Updated: 2017/11/16 15:27:55 by eramirez         ###   ########.fr       */
+/*   Updated: 2017/11/21 15:37:37 by eramirez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@
 # define BLUE	0x000000FF
 # define ONE	0x00000001
 # define WHAT	0xFFFFFFFF
+# define COLOR	0x00FFFF00
 int g_H;
 int g_W;
 int g_zMax;
+int g_zMin;
 
 typedef struct      s_rows
 {
