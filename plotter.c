@@ -6,7 +6,7 @@
 /*   By: eramirez <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/08 01:18:48 by eramirez          #+#    #+#             */
-/*   Updated: 2017/11/21 15:36:28 by eramirez         ###   ########.fr       */
+/*   Updated: 2017/11/29 20:15:21 by eramirez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	z_max(int **arr)
 		{
 			if (g_zMax < arr[y][x])
 				g_zMax = arr[y][x];
-			if(g_zMin > arr[y][x]);
+			if(g_zMin > arr[y][x])
 				g_zMin = arr[y][x];
 			x++;
 		}
@@ -137,7 +137,7 @@ void	draw_line(void *mlx, void *win, int x, int y , int z, int X, int Y, int Z, 
 		pitch = (float)x - theta_line * (float)y;
 		while (y != Y)
 		{
-			PTG = my_color(z, Z, y, Y, my_abs(delta_y));
+			PTG = percent(z, Z, y, Y, my_abs(delta_y));
 			mlx_pixel_put(mlx, win, (int)(theta_line * (float)y + pitch + 0.5), y,
 				color + (BLUE * ((float)z/(float)g_zMax)) + (BLUE * PTG));
 			y = y + theta_y;
@@ -204,7 +204,7 @@ void	frame_plot(void *mlx, void *win, int **arr)
 	int grad;
 	int offset;
 
-	z_minmax(arr);
+	//z_minmax(arr);
 	grad = 1000 / mmax(g_H, g_W, g_zMax);
 	offset = 10;
 	v_lines(mlx, win, grad, offset, arr);

@@ -6,7 +6,7 @@
 /*   By: eramirez <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/06 18:39:04 by eramirez          #+#    #+#             */
-/*   Updated: 2017/11/21 14:27:27 by eramirez         ###   ########.fr       */
+/*   Updated: 2017/11/29 21:06:44 by eramirez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,7 @@ int	main(int argc, char **argv)
 	printf("Fd: %i\n", fd);
 	arr = read_map(fd);
 	close(fd);
+	printf("Plotting\n");
 	grid_plot(mlx, win, arr);
-	//printf("drawing line\n");
-	//draw_line(mlx, win, 10, 10, 50, 50);
-	//mlx_loop(mlx);
 	return(0);
 }
