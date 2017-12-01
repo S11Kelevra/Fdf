@@ -6,19 +6,19 @@
 /*   By: eramirez <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 16:23:38 by eramirez          #+#    #+#             */
-/*   Updated: 2017/11/29 23:22:09 by eramirez         ###   ########.fr       */
+/*   Updated: 2017/11/30 21:35:30 by eramirez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "fdf.h"
 #include "minilibx/mlx.h"
 #include <stdlib.h>
 
-void table_set()
+UL		*table_set(void)
 {
-	int i;
+	int	i;
 	UL	color;
+	UL	*color_table;
 
 	i = 0;
 	color = 0xFF;
@@ -36,63 +36,66 @@ void table_set()
 		color = color - 0x1;
 		i++;
 	}
+	return (color_table);
 }
 
-int my_abs(int n)
+int		my_abs(int n)
 {
 	if (n < 0)
-		return(n * -1);
+		return (n * -1);
 	else
-		return(n);
+		return (n);
 }
 
-UL	get_ptgcolor(int a, int start, int stop, t_vect node, int delta_z)
+UL		get_ptgcolor(int a, int start, t_vect node, t_init init)
 {
 	float	slope;
-	float	PTG;
-	float	CurrentZ;
+	float	ptg;
+	float	current_z;
 
 	if (node.z1 < node.z2)
 		slope = 1.0;
 	else
 		slope = -1.0;
-	CurrentZ = (float)(node.z1 - g_zMin);
-	PTG = (CurrentZ + slope * ((float)my_abs(a - stop)/(float)my_abs(start - stop)) *
-			(float)my_abs(delta_z)) / (float)(g_zMax - g_zMin);
-	return(color_table[(int)(511.0 * PTG)]);
+	current_z = (float)(node.z1 - init.z_Min);
+	ptg = (current_z + slope * ((float)my_abs(a - node.start) /
+			(float)my_abs(start - node.start)) *
+			(float)my_abs(node.delta_z)) / (float)(init.z_Max - init.z_Min);
+	return (node.color_table[(int)(511.0 * ptg)]);
 }
 
-UL get_zcolor(int z)
+UL		get_zcolor(int z, t_init init, UL *color_table)
 {
 	float	tz;
-	float	tZmax;
-	tz = (float)(z - g_zMin);
-	tZmax = (float)(g_zMax - g_zMin);
-	return(color_table[(int)(511.0 * (tz/tZmax))]);
+	float	tzmax;
+
+	tz = (float)(z - init.z_Min);
+	tzmax = (float)(init.z_Max - init.z_Min);
+	return (color_table[(int)(511.0 * (tz / tzmax))]);
 }
 
-void    z_minmax(int **arr)
+void	z_limits(t_init *param)
 {
-    int x;
-    int y;
+	int	x;
+	int	y;
 
-    x = 0;
-    y = 0;
-    g_zMax = 0;
-    g_zMin = 0;
-    while(y < g_H)
-    {
-        while (x < g_W)
-        {
-            if (g_zMax < arr[y][x])
-                g_zMax = arr[y][x];
-            if(g_zMin > arr[y][x])
-                g_zMin = arr[y][x];
-            x++;
-        }
-        y++;
-        x = 0;
-    }
-	if (g_zMax == 0)
-		g_zMax++;
+	x = 0;
+	y = 0;
+	param->z_Max = 0;
+	param->z_Min = 0;
+	while (y < param->H)
+	{
+		while (x < param->W)
+		{
+			if (param->z_Max < param->arr[y][x])
+				param->z_Max = param->arr[y][x];
+			if (param->z_Min > param->arr[y][x])
+				param->z_Min = param->arr[y][x];
+			x++;
+		}
+		y++;
+		x = 0;
+	}
+	if (param->z_Max == 0)
+		param->z_Max++;
 }
