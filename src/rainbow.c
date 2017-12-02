@@ -10,9 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
-#include "minilibx/mlx.h"
-#include <stdlib.h>
+#include "../includes/fdf.h"
+#include "../minilibx/mlx.h"
 
 UL		*table_set(void)
 {
@@ -39,14 +38,6 @@ UL		*table_set(void)
 	return (color_table);
 }
 
-int		my_abs(int n)
-{
-	if (n < 0)
-		return (n * -1);
-	else
-		return (n);
-}
-
 UL		get_ptgcolor(int a, int start, t_vect node, t_init init)
 {
 	float	slope;
@@ -58,9 +49,9 @@ UL		get_ptgcolor(int a, int start, t_vect node, t_init init)
 	else
 		slope = -1.0;
 	current_z = (float)(node.z1 - init.z_Min);
-	ptg = (current_z + slope * ((float)my_abs(a - node.start) /
-			(float)my_abs(start - node.start)) *
-			(float)my_abs(node.delta_z)) / (float)(init.z_Max - init.z_Min);
+	ptg = (current_z + slope * ((float)abs(a - node.start) /
+			(float)abs(start - node.start)) *
+			(float)abs(node.delta_z)) / (float)(init.z_Max - init.z_Min);
 	return (node.color_table[(int)(511.0 * ptg)]);
 }
 

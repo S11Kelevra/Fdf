@@ -1,6 +1,14 @@
-NAME = testread
+NAME = fdf
+SRC = src/main.c		\
+	  src/file_reader.c	\
+	  src/new_plotter.c	\
+	  src/line_draw.c	\
+	  src/rainbow.c		\
+
+BIN = $(SRCS:.c=.o)
+
 FLAGS = -Wall -Werror -Wextra -framework OpenGL -framework AppKit
-FILES = fr_tmain.c file_reader.c new_plotter.c rainbow.c line_draw.c
-molly:
+
+all:
 	make -C ./libft
-	gcc -o $(NAME) $(FILES) -L./libft -lft -L./minilibx -lmlx $(FLAGS) -g
+	gcc -o $(NAME) $(SRC) -L./libft -lft -L./minilibx -lmlx $(FLAGS) -g

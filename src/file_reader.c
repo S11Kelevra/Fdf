@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./fdf.h"
+#include "../includes/fdf.h"
 
 t_rows	*start_read(char *line)
 {

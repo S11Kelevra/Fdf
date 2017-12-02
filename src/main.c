@@ -6,15 +6,15 @@
 /*   By: eramirez <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/06 18:39:04 by eramirez          #+#    #+#             */
-/*   Updated: 2017/12/01 19:43:39 by eramirez         ###   ########.fr       */
+/*   Updated: 2017/12/01 21:27:00 by eramirez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
-#include "./minilibx/mlx.h"
-#include <strings.h>
+#include "../includes/fdf.h"
+#include "../minilibx/mlx.h"
 
-int	my_error(int n)
+
+int			my_error(int n)
 {
 	if (n == 1)
 		ft_putstr("Usage: ./fdf [path to file]\n");
@@ -23,7 +23,7 @@ int	my_error(int n)
 	return(-1);
 }
 
-int		checkmap(t_rows *head)
+int			checkmap(t_rows *head)
 {
 	t_rows *tmp;
 
@@ -47,11 +47,18 @@ static int	key_hook(int keycode, t_init *init)
 	return(0);
 }
 
-
-int		main(int argc, char **argv)
+void		grid_plot(t_init init)
 {
-	t_init init;
-    extern int errno;
+	z_limits(&init);
+	h_lines(init);
+	v_lines(init);
+	mlx_loop(init.mlx);
+}
+
+int			main(int argc, char **argv)
+{
+	t_init		init;
+    extern int	errno;
 
 	if (argc == 1 || argc > 2)
 		return(my_error(1));
