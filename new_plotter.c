@@ -6,14 +6,14 @@
 /*   By: eramirez <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/29 16:19:45 by eramirez          #+#    #+#             */
-/*   Updated: 2017/11/30 21:35:27 by eramirez         ###   ########.fr       */
+/*   Updated: 2017/12/01 19:18:48 by eramirez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include "minilibx/mlx.h"
 
-void	draw_line(t_init init, t_vect node)
+/*void	draw_line(t_init init, t_vect node)
 {
 	float	theta_line;
 	float	pitch;
@@ -52,7 +52,7 @@ void	draw_line(t_init init, t_vect node)
 	}
 	mlx_pixel_put(init.mlx, init.win, node.x2, node.y2,
 	get_zcolor(node.z2, init, node.color_table));
-}
+}*/
 
 void	offsetter(t_vect *node, t_init *init)
 {

@@ -6,7 +6,7 @@
 /*   By: eramirez <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/06 18:20:28 by eramirez          #+#    #+#             */
-/*   Updated: 2017/11/30 21:35:32 by eramirez         ###   ########.fr       */
+/*   Updated: 2017/12/01 19:10:16 by eramirez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	index_set(t_index *index)
 	index->y = -1;
 }
 
-void	read_map(t_init *init)
+int		read_map(t_init *init)
 {
 	char	*line;
 	t_index	index;
@@ -106,4 +106,5 @@ void	read_map(t_init *init)
 	init->arr = list_toarr(temp, index.i);
 	init->H = index.j;
 	init->W = head->elem;
+	return(checkmap(head));
 }

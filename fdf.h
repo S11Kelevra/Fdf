@@ -6,7 +6,7 @@
 /*   By: eramirez <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/07 13:17:43 by eramirez          #+#    #+#             */
-/*   Updated: 2017/11/30 21:32:05 by eramirez         ###   ########.fr       */
+/*   Updated: 2017/12/01 19:15:51 by eramirez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,13 @@ typedef struct		s_init
 	void			*mlx;
 }					t_init;
 
-void	read_map(t_init *init);
+int		checkmap(t_rows *head);
+int		read_map(t_init *init);
 void    grid_plot(t_init param);
 UL		get_ptgcolor(int a, int stop, t_vect node, t_init init);
 UL		get_zcolor(int z, t_init init, UL *color_table);
 int		my_abs(int n);
 void    z_limits(t_init *init);
-UL		*table_set();
+UL		*table_set(void);
+void	draw_line(t_init init, t_vect node);
+void    offsetter(t_vect *node, t_init *init);
