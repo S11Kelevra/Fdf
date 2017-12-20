@@ -4,10 +4,10 @@ Simple Wireframe generator, first project of graphics branch. Makes use of Breze
 
 ## Usages
 ### Makefile
-    Make clean
-    Make re
-    Make fclean
     Make all
+    Make re
+    Make clean
+    Make fclean
 ### Commands
     ./fdf [path to map]
 ### Keyhooks
