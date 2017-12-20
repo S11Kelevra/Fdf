@@ -12,3 +12,6 @@ Simple Wireframe generator, first project of graphics branch. Makes use of Breze
     ./fdf [path to map]
 ### Keyhooks
   Escape to close window
+### Thanks
+  Jenn Schiffers excelent psuedo code for line drawing
+  [![video](https://img.youtube.com/vi/zytBpLlSHms/0.jpg)](https://www.youtube.com/watch?v=zytBpLlSHms)
