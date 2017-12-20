@@ -3,8 +3,12 @@ Simple Wireframe generator, first project of graphics branch. Makes use of Breze
 <img src="https://github.com/S11Kelevra/Fdf/blob/master/fdfcap.png" width="900">
 
 ## Usages
+### Makefile
     Make clean
     Make re
     Make fclean
     Make all
+### Commands
     ./fdf [path to map]
+### Keyhooks
+  Escape to close window
